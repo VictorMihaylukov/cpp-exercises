@@ -95,7 +95,6 @@ unsigned int y = 1;
 через: `x < y`
 
 # 1.2
-### ТЗ: Scope и lifetime объектов
 
 1. Создать класс `Tracer` с:
     - полем имени объекта;
@@ -248,3 +247,37 @@ tests.emplace_back(...);
 ```
 
 Например 3 штуки.
+
+# 2.3 
+Возьми такую структуру:
+```cpp
+struct Vertex
+{
+    float x;
+    float y;
+    float z;
+};
+```
+
+Тебе нужно реализовать:
+```cpp
+void ByValue(Vertex v);
+void ByReference(Vertex& v);
+void ByConstReference(const Vertex& v);
+void ByPointer(Vertex* v);
+```
+
+Требования простые:
+- ByValue - измени x на 10;
+- ByReference - измени x на 20;
+- ByConstReference - просто выведи x;
+- ByPointer - измени x на 30, но учти возможность nullptr.
+
+Затем в main() создай:
+`Vertex vertex{1.0f, 2.0f, 3.0f};`
+
+и последовательно вызови все четыре функции. После каждого вызова выводи vertex.x, чтобы увидеть результат.
+Ещё добавь вывод адреса исходного объекта:
+`std::cout << &vertex << '\n';`
+
+А внутри каждой функции попробуй вывести адрес объекта, с которым она работает.
