@@ -310,3 +310,41 @@ struct Vertex
 - size()
 - capacity()
 - data()
+
+# 3.1
+Создай небольшую C++ программу с тремя структурами:
+
+```cpp
+struct VertexA
+{
+    char type;
+    float x, y, z;
+    int id;
+};
+
+struct VertexB
+{
+    float x, y, z;
+    int id;
+    char type;
+};
+
+struct VertexC
+{
+    int id;
+    char type;
+    float x, y, z;
+};
+```
+
+Вывести для каждой структуры:
+1. `sizeof`.
+2. `alignof`.
+3. `offsetof` каждого поля.
+
+# 4
+Напиши простую систему callback'ов:
+
+- OnResize
+- OnKeyPressed
+- OnMouseMove
