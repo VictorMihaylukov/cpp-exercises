@@ -1,5 +1,4 @@
 # cpp exercise
-There is a exercises for cpp course that i do
 
 # 0
 Создать консольный C++-проект с файлами: main.cpp, math.cpp, math.h
@@ -348,3 +347,142 @@ struct VertexC
 - OnResize
 - OnKeyPressed
 - OnMouseMove
+
+# 5.1
+## Цель
+Реализовать класс `Mesh`.
+
+## 1. Исходные данные
+Структура вершины:
+```cpp
+struct Vertex
+{
+    float x;
+    float y;
+    float z;
+};
+```
+
+Основа класса:
+```cpp
+class Mesh
+{
+public:
+    // Конструкторы и методы
+
+private:
+    std::vector<Vertex> vertices_;
+    std::vector<uint32_t> indices_;
+};
+```
+
+## 2. Требования к классу
+Реализовать два конструктора:
+- `Mesh()` — создаёт пустой меш.
+- `Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)` - создаёт меш с копиями переданных вершин и индексов.
+
+Для второго конструктора использовать список инициализации. В рамках задания входные данные конструктора считаются корректными.
+
+### 2.2. Добавление вершин
+```cpp
+void AddVertex(const Vertex& vertex);
+```
+
+Требования:
+- Добавлять вершину в конец `vertices_`.
+- Не изменять `indices_`.
+
+### 2.3. Добавление треугольников
+```cpp
+bool AddTriangle(uint32_t a, uint32_t b, uint32_t c);
+```
+
+Требования:
+- Проверять, что все три индекса указывают на существующие вершины.
+- Если индексы корректны, добавлять их в `indices_` и возвращать `true`.
+- Если хотя бы один индекс некорректен, возвращать `false`, не изменяя данные меша.
+
+### 2.4. Получение информации
+Реализовать методы:
+```cpp
+size_t GetVertexCount() const;
+size_t GetTriangleCount() const;
+const Vertex& GetVertex(size_t index) const;
+```
+
+Требования:
+- `GetVertexCount()` возвращает количество вершин.
+- `GetTriangleCount()` возвращает количество треугольников.
+- `GetVertex()` возвращает константную ссылку на вершину с указанным индексом.
+
+Для `GetVertex()` предполагается, что вызывающий код передаёт корректный индекс.
+
+### 2.5. Перемещение геометрии
+```cpp
+void Translate(float dx, float dy, float dz);
+```
+
+Требования:
+- Изменять координаты всех вершин.
+- Прибавлять `dx` к `x`, `dy` к `y`, `dz` к `z`.
+- Не изменять индексы.
+
+### 2.6. Очистка меша
+```cpp
+void Clear();
+```
+
+Требования:
+- Удалять все вершины.
+- Удалять все индексы.
+- После очистки количество вершин и треугольников должно быть равно нулю.
+
+## 3. Ограничения реализации
+- Поля `vertices_` и `indices_` должны оставаться `private`.
+- Не создавать публичных методов, возвращающих изменяемые ссылки на внутренние векторы.
+- Не использовать глобальные переменные.
+- Не использовать `new` и `delete`.
+- Не реализовывать собственный деструктор без необходимости.
+- Все методы получения информации, не изменяющие объект, должны быть объявлены `const`.
+
+## 4. Проверка работоспособности
+Реализованный класс должен обеспечивать корректную работу следующей программы:
+
+```cpp
+int main()
+{
+    Mesh mesh;
+
+    mesh.AddVertex({0.0f, 1.0f, 0.0f});
+    mesh.AddVertex({-1.0f, -1.0f, 0.0f});
+    mesh.AddVertex({1.0f, -1.0f, 0.0f});
+
+    mesh.AddTriangle(0, 1, 2);
+
+    std::cout << mesh.GetVertexCount() << '\n';
+    std::cout << mesh.GetTriangleCount() << '\n';
+
+    mesh.Translate(1.0f, 2.0f, 3.0f);
+
+    const Vertex& vertex = mesh.GetVertex(0);
+
+    std::cout << vertex.x << " "
+              << vertex.y << " "
+              << vertex.z << '\n';
+
+    bool result = mesh.AddTriangle(0, 1, 100);
+
+    std::cout << std::boolalpha << result << '\n';
+
+    mesh.Clear();
+
+    std::cout << mesh.GetVertexCount() << '\n';
+}
+```
+
+Ожидаемый вывод:
+3
+1
+1 3 3
+false
+0
